@@ -1,7 +1,8 @@
 const express = require('express');
-const app = express();
+const cors = require('cors')
 const config = require('./config.json');
-app.use(express.json());
+const app = express();
+app.use(express.json(), cors());
 
 var port = config.port;
 
