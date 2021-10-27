@@ -19,6 +19,21 @@ class clienteService {
         }
     }
 
+    static async getClientesPorData(dataIni: any, dataFim: any){
+        try {
+            const todosClientes = await Clientes.find({ data_nasc: { $gte: dataIni, $lte: dataFim } }).populate([{
+                path: 'enderecos',
+                model: 'Enderecos'
+            }, {
+                path: 'telefones',
+                model: 'Telefones'
+            }]);
+            return todosClientes;
+        } catch (err) {
+            return "erro400";
+        }
+    }
+
     static async createCliente(requisicao: ClienteInterface) {
         const { nome_cliente, data_nasc, enderecos: [{ rua, cidade, bairro, uf }], telefones: [{ numero, ddd, tipo_telefone }] } = requisicao;
 
