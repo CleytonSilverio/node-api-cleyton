@@ -1,12 +1,17 @@
 import ClienteService from '../services/clienteService'
 import { Request, Response } from 'express';
-import Clientes from '../models/clientes';
+import Clientes, { ClienteInterface } from '../models/clientes';
 import clienteService from '../services/clienteService';
 
 class ClientesController {
 
     static async getClientes(req: Request, res: Response) {
-        const todosClientes = await ClienteService.getClientes();
+        let todosClientes = null;
+        if(req.query.dataini && req.query.datafim){
+            todosClientes = await ClienteService.getClientesPorData(req.query.dataini, req.query.datafim);
+        }else{
+            todosClientes = await ClienteService.getClientes();
+        }
         if (todosClientes === "erro400") {
             return res.status(400).json({
                 message: "Não foi possivel encontrar os registros, contate o administrador!"
