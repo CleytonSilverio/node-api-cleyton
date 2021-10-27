@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 import Schema = mongoose.Schema;
 
+export interface ClienteInterface{
+    nome_cliente: string;
+    data_nasc: string;
+    enderecos: any[];
+    telefones: any[];
+}
+
 const clientesSchema = new mongoose.Schema({
     nome_cliente: {
         type: String,

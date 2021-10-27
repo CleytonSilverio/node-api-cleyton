@@ -8,8 +8,15 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.post('/', async (req: Request, res: Response) => {
-    console.log(req.body.enderecos)
     ClientesController.postClientes(req, res);
+});
+
+router.patch('/:id', async (req: Request, res: Response) => {
+    ClientesController.patchClientes(req, res);
+});
+
+router.delete('/:id', async (req: Request, res: Response) => {
+    ClientesController.deleteClientes(req, res);
 });
 
 export default router;
