@@ -1,6 +1,8 @@
 import Usuarios, { UsuarioInterface } from "../models/usuario";
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 import logger from "../logger";
+import bcrypt from 'bcrypt';
+import config from 'config';
 
 class usuarioService {
 
@@ -9,7 +11,15 @@ class usuarioService {
         const session = await mongoose.startSession()
         session.startTransaction()
         try {
-            const { nome_usuario, senha } = requisicao;
+            let { nome_usuario, senha } = requisicao;
+
+            console.log(requisicao.senha);
+
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hashSync(requisicao.senha, salt);
+            senha = hash
+
+            console.log(requisicao.senha);
 
             const usuario = await Usuarios.create({
                 nome_usuario,
@@ -31,7 +41,7 @@ class usuarioService {
 
     static async getUsuarioUnico(idUsuario: any) {
         try {
-            const usuario = await Usuarios.find({ _id: { idUsuario } });
+            const usuario = await Usuarios.find({ _id: idUsuario });
             logger.log('info', 'Usuário solicitado: ', idUsuario);
             return usuario
         } catch (err) {
